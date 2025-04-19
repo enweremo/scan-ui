@@ -2,61 +2,84 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Cloud Vulnerability Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cloud Security Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f8fa;
       margin: 0;
-      padding: 40px;
-      text-align: center;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #ffffff;
     }
+
     h1 {
-      color: #222;
+      font-size: 2rem;
+      margin-bottom: 20px;
     }
+
+    .btn-container {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
     button {
-      margin: 10px;
-      padding: 12px 24px;
-      font-size: 16px;
-      cursor: pointer;
+      padding: 12px 22px;
       border: none;
-      border-radius: 6px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 1rem;
       color: white;
-      background-color: #007bff;
+      background: #00c9a7;
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
+
     button:hover {
-      background-color: #0056b3;
+      background: #02a18d;
     }
+
     #spinner {
       display: none;
-      margin-top: 20px;
-      font-style: italic;
-      color: #555;
+      font-size: 1rem;
+      color: #00ffcc;
+      margin-bottom: 20px;
+      animation: blink 1.2s linear infinite;
     }
+
+    @keyframes blink {
+      50% { opacity: 0.4; }
+    }
+
     #output {
-      margin-top: 30px;
+      background: #1a1a1a;
+      color: #00ffcc;
+      font-family: monospace;
       padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      width: 80%;
-      margin-left: auto;
-      margin-right: auto;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 0 10px rgba(0,255,204,0.3);
       white-space: pre-wrap;
-      word-wrap: break-word;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
-
   <h1>🔍 Cloud Security Operations</h1>
 
-  <button onclick="trigger('crawl')">Start Crawl</button>
-  <button onclick="trigger('scan')">Start Scan</button>
+  <div class="btn-container">
+    <button onclick="trigger('crawl')">Start Crawl</button>
+    <button onclick="trigger('scan')">Start Scan</button>
+  </div>
 
-  <div id="spinner">⏳ Please wait... Triggering task...</div>
-  <div id="output"></div>
+  <div id="spinner">⏳ Triggering task, please wait...</div>
+  <div id="output">// Results will appear here...</div>
 
   <script>
     async function trigger(action) {
@@ -83,9 +106,9 @@
         output.textContent = JSON.stringify(result, null, 2);
       } catch (err) {
         output.textContent = "❌ Error: " + err.message;
+      } finally {
+        spinner.style.display = "none";
       }
-
-      spinner.style.display = "none";
     }
   </script>
 </body>
