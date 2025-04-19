@@ -103,7 +103,7 @@
         });
 
         const result = await response.json();
-        output.textContent = JSON.stringify(result, null, 2);
+        output.textContent = result.body || JSON.stringify(result, null, 2);
       } catch (err) {
         output.textContent = "❌ Error: " + err.message;
       } finally {
