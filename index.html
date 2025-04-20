@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cloud Security Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      background: linear-gradient(135deg, #1e3c72, #2a5298); /* Blue gradient */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -37,14 +37,13 @@
       font-weight: 700;
       font-size: 1rem;
       color: white;
-      background: #4dc9ff; /* light blue */
+      background: #6a5acd; /* Soft purple */
       cursor: pointer;
       transition: background 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     button:hover {
-      background: #00c978;
+      background: #00c978; /* Hover green */
     }
 
     #spinner {
@@ -63,7 +62,7 @@
       background: #1a1a1a;
       color: #00ffcc;
       font-family: monospace;
-      font-size: 1.05rem;
+      font-size: 1.25rem;
       padding: 20px;
       border-radius: 10px;
       width: 90%;
@@ -74,7 +73,7 @@
   </style>
 </head>
 <body>
-  <h1> Cloud Security Operations</h1>
+  <h1>🔍 Cloud Security Operations</h1>
 
   <div class="btn-container">
     <button onclick="trigger('crawl')">Start Crawl</button>
@@ -105,14 +104,10 @@
           body: JSON.stringify({})
         });
 
-        const contentType = response.headers.get("Content-Type") || "";
-        if (contentType.includes("application/json")) {
-          const result = await response.json();
-          output.textContent = result.body || JSON.stringify(result, null, 2);
-        } else {
-          const text = await response.text();
-          output.textContent = text;
-        }
+        const result = await response.json();
+        output.textContent = result.body
+          ? JSON.stringify({ message: result.body }, null, 2)
+          : JSON.stringify(result, null, 2);
       } catch (err) {
         output.textContent = "❌ Error: " + err.message;
       } finally {
@@ -122,4 +117,3 @@
   </script>
 </body>
 </html>
-
