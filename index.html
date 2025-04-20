@@ -9,7 +9,7 @@
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background: linear-gradient(135deg, #1c3f60, #2d5f80, #3f7fa0); /* brighter background */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -36,13 +36,13 @@
       font-weight: bold;
       font-size: 1rem;
       color: white;
-      background: #00c9a7;
+      background: #4dc9ff; /* light blue */
       cursor: pointer;
       transition: background 0.3s ease;
     }
 
     button:hover {
-      background: #02a18d;
+      background: #02a18d; /* pure green on hover */
     }
 
     #spinner {
@@ -71,7 +71,7 @@
   </style>
 </head>
 <body>
-  <h1>🔍 Cloud Security Operations</h1>
+  <h1> Cloud Security Operations</h1>
 
   <div class="btn-container">
     <button onclick="trigger('crawl')">Start Crawl</button>
@@ -102,8 +102,14 @@
           body: JSON.stringify({})
         });
 
-        const result = await response.json();
-        output.textContent = result.body || JSON.stringify(result, null, 2);
+        const contentType = response.headers.get("Content-Type") || "";
+        if (contentType.includes("application/json")) {
+          const result = await response.json();
+          output.textContent = result.body || JSON.stringify(result, null, 2);
+        } else {
+          const text = await response.text();
+          output.textContent = text;
+        }
       } catch (err) {
         output.textContent = "❌ Error: " + err.message;
       } finally {
@@ -113,3 +119,4 @@
   </script>
 </body>
 </html>
+
