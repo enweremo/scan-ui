@@ -144,7 +144,7 @@
           ? JSON.stringify({ message: result.body }, null, 2)
           : JSON.stringify(result, null, 2);
       } catch (err) {
-        output.textContent = "❌ Error: " + err.message;
+        output.textContent = " Error: " + err.message;
       } finally {
         spinner.style.display = "none";
       }
