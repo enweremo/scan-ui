@@ -28,10 +28,6 @@
     }
 
     .input-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
       margin-bottom: 20px;
     }
 
@@ -40,7 +36,7 @@
       border-radius: 8px;
       border: none;
       font-size: 1rem;
-      width: 250px;
+      width: 300px;
       max-width: 90%;
     }
 
@@ -121,7 +117,7 @@
         font-size: 1rem;
       }
 
-      .btn-container, .input-container {
+      .btn-container {
         flex-direction: column;
         gap: 10px;
       }
@@ -132,8 +128,7 @@
   <h1>Cloud-Based Vulnerability Scanner</h1>
 
   <div class="input-container">
-    <input type="text" id="crawl-url" placeholder="Enter URL to Crawl (optional)" />
-    <input type="text" id="scan-ip" placeholder="Enter IP to Scan (optional)" />
+    <input type="text" id="target" placeholder="Enter IP or URL to Scan or Crawl" />
   </div>
 
   <div class="btn-container">
@@ -148,8 +143,7 @@
     async function trigger(action) {
       const spinner = document.getElementById("spinner");
       const output = document.getElementById("output");
-      const crawlUrl = document.getElementById("crawl-url").value.trim();
-      const scanIp = document.getElementById("scan-ip").value.trim();
+      const target = document.getElementById("target").value.trim();
 
       const endpoint = action === "crawl"
         ? "https://ql29uwsev3.execute-api.us-east-1.amazonaws.com/prod/crawl"
@@ -165,8 +159,8 @@
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            url: crawlUrl || undefined,
-            ip: scanIp || undefined
+            url: action === "crawl" ? target : undefined,
+            ip: action === "scan" ? target : undefined
           })
         });
 
