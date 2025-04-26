@@ -10,7 +10,7 @@
       margin: 0;
       padding: 20px;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298); /* Blue gradient */
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -25,6 +25,23 @@
       font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 24px;
+    }
+
+    .input-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      width: 250px;
+      max-width: 90%;
     }
 
     .btn-container {
@@ -42,14 +59,14 @@
       font-weight: 700;
       font-size: 1.1rem;
       color: white;
-      background: #6a5acd; /* Soft purple */
+      background: #6a5acd;
       cursor: pointer;
       transition: background 0.3s ease;
       min-width: 140px;
     }
 
     button:hover {
-      background: #00c978; /* Hover green */
+      background: #00c978;
     }
 
     #spinner {
@@ -96,11 +113,15 @@
         padding: 12px 18px;
       }
 
+      input {
+        width: 90%;
+      }
+
       #output {
         font-size: 1rem;
       }
 
-      .btn-container {
+      .btn-container, .input-container {
         flex-direction: column;
         gap: 10px;
       }
@@ -108,7 +129,12 @@
   </style>
 </head>
 <body>
-  <h1> Cloud-Based Vulnerability Scanner</h1>
+  <h1>Cloud-Based Vulnerability Scanner</h1>
+
+  <div class="input-container">
+    <input type="text" id="crawl-url" placeholder="Enter URL to Crawl (optional)" />
+    <input type="text" id="scan-ip" placeholder="Enter IP to Scan (optional)" />
+  </div>
 
   <div class="btn-container">
     <button onclick="trigger('crawl')">Start Crawl</button>
@@ -122,6 +148,8 @@
     async function trigger(action) {
       const spinner = document.getElementById("spinner");
       const output = document.getElementById("output");
+      const crawlUrl = document.getElementById("crawl-url").value.trim();
+      const scanIp = document.getElementById("scan-ip").value.trim();
 
       const endpoint = action === "crawl"
         ? "https://ql29uwsev3.execute-api.us-east-1.amazonaws.com/prod/crawl"
@@ -136,7 +164,10 @@
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({})
+          body: JSON.stringify({
+            url: crawlUrl || undefined,
+            ip: scanIp || undefined
+          })
         });
 
         const result = await response.json();
@@ -144,7 +175,7 @@
           ? JSON.stringify({ message: result.body }, null, 2)
           : JSON.stringify(result, null, 2);
       } catch (err) {
-        output.textContent = " Error: " + err.message;
+        output.textContent = "Error: " + err.message;
       } finally {
         spinner.style.display = "none";
       }
